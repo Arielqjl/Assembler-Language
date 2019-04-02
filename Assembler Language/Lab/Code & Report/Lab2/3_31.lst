@@ -1,0 +1,80 @@
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 21:33:08
+tempfile.asm						     Page 1 - 1
+
+
+ 0000				DATA1 SEGMENT
+ 0000 0005 0002 0006 FFFD	    M dw 5,2,6,-3,10
+       000A
+ 000A 0000			    data dw ?;存数据
+ 000C 0000			    adr dw ?;存地址 
+ 000E				DATA1 ENDS
+
+ 0000				CODES SEGMENT
+				    ASSUME CS:CODES,DS:DATA1
+ 0000				START:
+ 0000  B8 ---- R		    MOV AX,DATA1
+ 0003  8E D8			    MOV DS,AX
+				   
+ 0005  8D 36 0000 R		    lea si,M;取地址
+ 0009  8B 04			    mov ax,[si];取值
+ 000B  89 36 000C R		    mov adr,si
+				    
+ 000F  B9 0005			    mov cx,5
+ 0012  49			    dec cx
+ 0013  83 C6 02			    add si, 2
+				    
+ 0016  83 F8 00			    cmp ax,0
+ 0019  79 02			    jns abs
+ 001B  F7 D8			    neg ax
+				    
+ 001D				abs: 
+ 001D  8B 1C				mov bx,[si]
+ 001F  83 FB 00				cmp bx,0
+ 0022  79 02				JNS comp
+ 0024  F7 DB				neg bx
+					
+ 0026				comp:
+ 0026  3B C3				cmp ax,bx
+ 0028  73 06			    JAE getnum
+ 002A  8B C3			    mov ax,bx
+ 002C  89 36 000C R		    mov adr,si
+					
+ 0030				getnum:
+ 0030  83 C6 02				add si,2
+ 0033  E2 E8				loop abs
+ 0035  A3 000A R			mov data,ax	 
+					   
+				   
+ 0038  B8 4C00			    MOV AX,4C00H
+ 003B  CD 21			    INT 21H
+ 003D				CODES ENDS
+				    END START
+
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 21:33:08
+tempfile.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CODES  . . . . . . . . . . . . .	16 Bit	 003D	  Para	  Private 
+DATA1  . . . . . . . . . . . . .	16 Bit	 000E	  Para	  Private 
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+M  . . . . . . . . . . . . . . .	Word	 0000	  DATA1	
+START  . . . . . . . . . . . . .	L Near	 0000	  CODES	
+abs  . . . . . . . . . . . . . .	L Near	 001D	  CODES	
+adr  . . . . . . . . . . . . . .	Word	 000C	  DATA1	
+comp . . . . . . . . . . . . . .	L Near	 0026	  CODES	
+data . . . . . . . . . . . . . .	Word	 000A	  DATA1	
+getnum . . . . . . . . . . . . .	L Near	 0030	  CODES	
+
+	   0 Warnings
+	   0 Errors

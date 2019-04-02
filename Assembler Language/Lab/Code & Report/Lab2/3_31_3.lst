@@ -1,0 +1,131 @@
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 21:41:08
+tempfile.asm						     Page 1 - 1
+
+
+ 0000				DATAS SEGMENT
+ 0000  0005 [			    num db 5 dup(0)
+        00
+       ]
+ 0005				DATAS ENDS
+
+ 0000				STACKS SEGMENT
+				    ;此处输入堆栈段代码
+ 0000				STACKS ENDS
+
+ 0000				CODES SEGMENT
+				    ASSUME CS:CODES,DS:DATAS,SS:STACKS
+ 0000				START:
+ 0000  B8 ---- R		    MOV AX,DATAS
+ 0003  8E D8			    MOV DS,AX
+				    
+ 0005				menu:
+ 0005  B4 01				mov ah,01h
+ 0007  CD 21				int 21h
+ 0009  3C 31				cmp al,'1'
+ 000B  74 12				jz n1
+ 000D  3C 32				cmp al,'2'
+ 000F  74 1A				jz n2
+ 0011  3C 33				cmp al,'3'
+ 0013  74 25				jz n3
+ 0015  3C 34				cmp al,'4'
+ 0017  74 30				jz n4
+ 0019  3C 35				cmp al,'5'
+ 001B  74 3B				jz n5
+ 001D  EB 48				jmp exit
+					
+ 001F				n1:
+ 001F  8A 0E 0000 R			mov cl,num
+ 0023  FE C1				inc cl
+ 0025  88 0E 0000 R			mov num[0], cl
+ 0029  EB DA				jmp menu
+ 002B				n2:
+ 002B  BB 0001				MOV BX,1
+ 002E  8A 8F 0000 R			MOV CL,NUM[BX]
+ 0032  FE C1				inc cl
+ 0034  88 8F 0000 R			mov num[bx], cl
+ 0038  EB CB				jmp menu
+ 003A				n3:
+ 003A  BB 0002				MOV BX,2
+ 003D  8A 8F 0000 R			MOV CL,NUM[BX]
+ 0041  FE C1				inc cl
+ 0043  88 8F 0000 R			mov num[bx], cl
+ 0047  EB BC				jmp menu
+ 0049				n4:
+ 0049  BB 0003				MOV BX,3
+ 004C  8A 8F 0000 R			MOV CL,NUM[BX]
+ 0050  FE C1				inc cl
+ 0052  88 8F 0000 R			mov num[bx], cl
+ 0056  EB AD				jmp menu
+ 0058				n5:
+ 0058  BB 0004				MOV BX,4
+ 005B  8A 8F 0000 R			MOV CL,NUM[BX]
+ 005F  FE C1				inc cl
+ 0061  88 8F 0000 R			mov num[bx], cl
+ 0065  EB 9E				jmp menu
+					
+ 0067				exit:
+ 0067  8A 16 0000 R			mov dl,num[0]
+ 006B  80 C2 30				add dl,30h
+ 006E  B4 02				mov ah,02
+ 0070  CD 21				int 21h
+ 0072  8A 16 0001 R			mov dl,num[1]
+ 0076  80 C2 30				add dl,30h
+ 0079  B4 02				mov ah,02
+ 007B  CD 21				int 21h
+ 007D  8A 16 0002 R			mov dl,num[2]
+ 0081  80 C2 30				add dl,30h
+ 0084  B4 02				mov ah,02
+ 0086  CD 21				int 21h
+ 0088  8A 16 0003 R			mov dl,num[3]
+ 008C  80 C2 30				add dl,30h
+ 008F  B4 02				mov ah,02
+ 0091  CD 21				int 21h
+ 0093  8A 16 0004 R			mov dl,num[4]
+ 0097  80 C2 30				add dl,30h
+ 009A  B4 02				mov ah,02
+ 009C  CD 21				int 21h
+ 009E  8A 16 0005 R			mov dl,num[5]
+ 00A2  80 C2 30				add dl,30h
+ 00A5  B4 02				mov ah,02
+ 00A7  CD 21				int 21h
+					    
+ 00A9  B4 01			    MOV AH,01H
+ 00AB  CD 21			    INT 21H
+ 00AD				CODES ENDS
+				    END START
+
+
+
+
+
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 21:41:08
+tempfile.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CODES  . . . . . . . . . . . . .	16 Bit	 00AD	  Para	  Private 
+DATAS  . . . . . . . . . . . . .	16 Bit	 0005	  Para	  Private 
+STACKS . . . . . . . . . . . . .	16 Bit	 0000	  Para	  Private 
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+START  . . . . . . . . . . . . .	L Near	 0000	  CODES	
+exit . . . . . . . . . . . . . .	L Near	 0067	  CODES	
+menu . . . . . . . . . . . . . .	L Near	 0005	  CODES	
+n1 . . . . . . . . . . . . . . .	L Near	 001F	  CODES	
+n2 . . . . . . . . . . . . . . .	L Near	 002B	  CODES	
+n3 . . . . . . . . . . . . . . .	L Near	 003A	  CODES	
+n4 . . . . . . . . . . . . . . .	L Near	 0049	  CODES	
+n5 . . . . . . . . . . . . . . .	L Near	 0058	  CODES	
+num  . . . . . . . . . . . . . .	Byte	 0000	  DATAS	
+
+	   0 Warnings
+	   0 Errors

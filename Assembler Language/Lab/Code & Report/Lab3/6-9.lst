@@ -1,0 +1,96 @@
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 21:54:16
+tempfile.asm						     Page 1 - 1
+
+
+ 0000				DATAS SEGMENT
+				    ;此处输入数据段代码  
+ 0000 004C 0045 0054 005A	    score dw 76,69,84,90,73,88,99,63,100,80
+       0049 0058 0063
+       003F 0064 0050
+ 0014 0000			    s6 dw 0
+ 0016 0000			    s7 dw 0
+ 0018 0000			    s8 dw 0
+ 001A 0000			    s9 dw 0
+ 001C 0000			    s10 dw 0
+ 001E				DATAS ENDS
+
+ 0000				STACKS SEGMENT
+				    ;此处输入堆栈段代码
+ 0000				STACKS ENDS
+
+ 0000				CODES SEGMENT
+				    ASSUME CS:CODES,DS:DATAS,SS:STACKS
+ 0000				START:
+ 0000					main proc far
+ 0000  B8 ---- R		    MOV AX,DATAS
+ 0003  8E D8			    MOV DS,AX
+				    ;此处输入代码段代码
+				    
+ 0005				begin:
+ 0005  B9 000A				mov cx,10
+ 0008  E8 0001				call count
+ 000B  CB				ret
+ 000C				main endp
+
+ 000C				count proc near
+ 000C  BE 0000				mov si,0
+ 000F				next:
+ 000F  8B 84 0000 R			mov ax,score[si]
+ 0013  BB 000A				mov bx,10
+ 0016  F6 F3				div bl
+ 0018  8A D8				mov bl,al
+ 001A  83 EB 06				sub bx,6
+ 001D  D1 E3				sal bx,1
+ 001F  FF 87 0014 R			inc s6[bx]
+ 0023  83 C6 02				add si,2
+ 0026  E2 E7				loop next
+ 0028  C3				ret
+ 0029				count endp
+				    
+				    
+ 0029  B4 4C			    MOV AH,4CH
+ 002B  CD 21			    INT 21H
+ 002D				CODES ENDS
+				    END START
+
+
+
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 21:54:16
+tempfile.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CODES  . . . . . . . . . . . . .	16 Bit	 002D	  Para	  Private 
+DATAS  . . . . . . . . . . . . .	16 Bit	 001E	  Para	  Private 
+STACKS . . . . . . . . . . . . .	16 Bit	 0000	  Para	  Private 
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+count  . . . . . . . . . . . . .	P Near	 000C	  CODES	Length= 001D Public
+  next . . . . . . . . . . . . .	L Near	 000F	  CODES	
+main . . . . . . . . . . . . . .	P Far	 0000	  CODES	Length= 000C Public
+  begin  . . . . . . . . . . . .	L Near	 0005	  CODES	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+START  . . . . . . . . . . . . .	L Near	 0000	  CODES	
+s10  . . . . . . . . . . . . . .	Word	 001C	  DATAS	
+s6 . . . . . . . . . . . . . . .	Word	 0014	  DATAS	
+s7 . . . . . . . . . . . . . . .	Word	 0016	  DATAS	
+s8 . . . . . . . . . . . . . . .	Word	 0018	  DATAS	
+s9 . . . . . . . . . . . . . . .	Word	 001A	  DATAS	
+score  . . . . . . . . . . . . .	Word	 0000	  DATAS	
+
+	   0 Warnings
+	   0 Errors

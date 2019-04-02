@@ -1,0 +1,102 @@
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 21:36:28
+tempfile.asm						     Page 1 - 1
+
+
+ 0000				DATAS SEGMENT
+ 0000 0000 0002 0004 0006	    A dw 0,2,4,6,8,10,12,14,16,18,20,22,24,26,28
+       0008 000A 000C
+       000E 0010 0012
+       0014 0016 0018
+       001A 001C
+ 001E 0000 0001 0002 0003	    B dw 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19
+       0004 0005 0006
+       0007 0008 0009
+       000A 000B 000C
+       000D 000E 000F
+       0010 0011 0012
+       0013
+ 0046  000F [			    cc dw 15 dup(?)
+        0000
+       ]
+ 0064				DATAS ENDS
+
+ 0000				STACKS SEGMENT
+				    ;此处输入堆栈段代码
+ 0000				STACKS ENDS
+
+ 0000				CODES SEGMENT
+				    ASSUME CS:CODES,DS:DATAS,SS:STACKS
+ 0000				START:
+ 0000  B8 ---- R		    MOV AX,DATAS
+ 0003  8E D8			    MOV DS,AX
+				    
+ 0005  BE 0000			    mov si,0
+ 0008  BB 0000			    mov bx,0
+ 000B  B9 000F			    mov cx,15
+				   
+ 000E				loop1:
+ 000E  51				push cx
+ 000F  B9 0014				mov cx,20
+ 0012  BF 0000				mov di,0
+ 0015  8B 84 0000 R			mov ax,A[si]
+				    
+ 0019				loop2:
+ 0019  39 85 001E R			cmp B[di],ax
+ 001D  75 07				JNZ continue
+ 001F  89 87 0046 R			mov cc[bx],ax;相等的时候move
+ 0023  83 C3 02				add bx,2
+					
+ 0026				continue:
+ 0026  83 C7 02				add di,2
+ 0029  E2 EE				loop loop2
+ 002B  83 C6 02				add si,2
+ 002E  59				pop cx
+ 002F  E2 DD				loop loop1
+					
+					
+				    
+				    
+ 0031  B4 4C			    MOV AH,4CH
+ 0033  CD 21			    INT 21H
+ 0035				CODES ENDS
+				    END START
+
+
+
+
+
+
+
+
+
+
+
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 21:36:28
+tempfile.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CODES  . . . . . . . . . . . . .	16 Bit	 0035	  Para	  Private 
+DATAS  . . . . . . . . . . . . .	16 Bit	 0064	  Para	  Private 
+STACKS . . . . . . . . . . . . .	16 Bit	 0000	  Para	  Private 
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+A  . . . . . . . . . . . . . . .	Word	 0000	  DATAS	
+B  . . . . . . . . . . . . . . .	Word	 001E	  DATAS	
+START  . . . . . . . . . . . . .	L Near	 0000	  CODES	
+cc . . . . . . . . . . . . . . .	Word	 0046	  DATAS	
+continue . . . . . . . . . . . .	L Near	 0026	  CODES	
+loop1  . . . . . . . . . . . . .	L Near	 000E	  CODES	
+loop2  . . . . . . . . . . . . .	L Near	 0019	  CODES	
+
+	   0 Warnings
+	   0 Errors

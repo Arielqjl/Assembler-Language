@@ -1,0 +1,64 @@
+DATAS SEGMENT
+    SINGLIST	DD	 SING1
+DD  SING2
+DD  SING3
+DD  SING4
+DD  SING5
+ERRMSG	DB	 ‘Error! Invalid parameter!’, 0DH, 0AH, ‘$’
+
+    ;此处输入数据段代码  
+DATAS ENDS
+
+STACKS SEGMENT
+    ;此处输入堆栈段代码
+STACKS ENDS
+
+CODES SEGMENT
+    ASSUME CS:CODES,DS:DATAS,SS:STACKS
+START:
+    MOV AX,DATAS
+    MOV DS,AX
+    
+    MAIN		PROC	FAR
+ASSUME  CS: CSEG, DS: DSEG
+START:		PUSH	DS				；设置返回DOS
+SUB		AX, AX
+PUSH	AX
+MOV	AX, DSEG
+MOV	DS, AX			；给DS赋值
+
+BEGIN:		MOV	AH, 1			；从键盘输入的歌曲编号1~5
+INT		21H
+CMP	AL, 0DH
+JZ		EXIT			；是回车符，则结束
+SUB		AL, ‘1’			；是1~5吗？
+JB		ERROR			；小于1，错误
+CMP	AL, 4
+JA		ERROR			；大于5，错误
+MOV	BX, OFFSET SINGLIST
+MUL	AX, 4			；(AX)=(AL)*4,每个歌曲程序的首地址占4个字节
+ADD	BX, AX
+JMP		DWORD PTR[BX]	；转去执行歌曲程序
+ERROR:	MOV	DX, OFFSET ERRMSG
+MOV	AH, 09H
+INT		21H				；显示错误信息
+JMP		BEGIN
+SING1:		┇
+JMP		BEGIN
+SING2:		┇
+JMP		BEGIN
+SING3:		┇
+JMP		BEGIN
+SING4:		┇
+JMP		BEGIN
+SING5:		┇
+JMP		BEGIN
+EXIT:		RET
+MAIN		ENDP
+
+    ;此处输入代码段代码
+    MOV AH,4CH
+    INT 21H
+CODES ENDS
+    END START
+

@@ -1,0 +1,124 @@
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 22:03:09
+tempfile.asm						     Page 1 - 1
+
+
+ 0000				DATAS SEGMENT
+				    ;此处输入数据段代码  
+ 0000 0000				time1 dw 0
+ 0002 0000				time2 dw 0
+ 0004				DATAS ENDS
+
+ 0000				STACKS SEGMENT
+				    ;此处输入堆栈段代码
+ 0000				STACKS ENDS
+
+ 0000				CODES SEGMENT
+				    ASSUME CS:CODES,DS:DATAS,SS:STACKS
+ 0000				START:  
+ 0000  B8 ---- R		    MOV AX,DATAS
+ 0003  8E D8			    MOV DS,AX
+				    ;此处输入代码段代码
+				    
+					;获取系统时间
+ 0005  B4 2C			    mov ah,2ch
+ 0007  CD 21			    int 21h
+				    
+				    ;1/100秒到bx
+ 0009  BB 0000			    mov bx,0
+ 000C  8A CA			  	mov cl,dl
+ 000E  B5 00			    mov ch,0
+ 0010  03 D9			   	add bx,cx
+				    
+				    ;秒*100到bx，与前面错位
+ 0012  8A C6			    mov al,dh
+ 0014  B6 64			    mov dh,100
+ 0016  F6 E6			    mul dh
+ 0018  03 D8			    add bx,ax
+				    
+ 001A  89 1E 0000 R		    mov time1,bx
+				 
+				    ; 中断
+ 001E  B4 01			 	mov ah,01h
+ 0020  CD 21			    int 21h
+				    
+				    ;获取系统时间
+ 0022  B4 2C			    mov ah,2ch
+ 0024  CD 21			    int 21h
+				    
+				    ;处理时间
+ 0026  BB 0000			    mov bx,0
+ 0029  8A CA			  	mov cl,dl
+ 002B  B5 00			    mov ch,0
+ 002D  03 D9			   	add bx,cx
+				    
+ 002F  8A C6			    mov al,dh
+ 0031  B6 64			    mov dh,100
+ 0033  F6 E6			    mul dh
+ 0035  03 D8			    add bx,ax
+				    
+ 0037  89 1E 0002 R		    mov time2,bx
+				 	
+				 	;时间相减
+ 003B  A1 0002 R		 	mov ax,time2
+ 003E  8B 1E 0000 R		 	mov bx,time1
+ 0042  2B C3			 	sub ax,bx
+				 	
+ 0044  B9 0005			 	mov cx,5		;输出位数
+ 0047  B3 0A			    mov bl,10 		;10进制输出
+
+ 0049				print:
+ 0049  F6 F3			    div bl   	;余数放在ah，商放在al中
+				    
+ 004B  8A D4			    mov dl,ah
+ 004D  80 C2 30			    add dl,30h
+ 0050  52			    push dx
+ 0051  8A F8			    mov bh,al
+ 0053  8A C7			    mov al,bh
+ 0055  B4 00			    mov ah,0
+ 0057  E2 F0			    loop print
+				    
+ 0059  B9 0005			    mov cx,5
+ 005C				exit:
+ 005C  5A				pop dx
+ 005D  B4 02			    mov ah,2h
+ 005F  CD 21			    int 21h
+ 0061  E2 F9			    loop exit
+				    
+				    
+ 0063  B4 4C			    MOV AH,4CH
+ 0065  CD 21			    INT 21H
+ 0067				CODES ENDS
+				    END START
+
+
+
+
+
+
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 22:03:09
+tempfile.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CODES  . . . . . . . . . . . . .	16 Bit	 0067	  Para	  Private 
+DATAS  . . . . . . . . . . . . .	16 Bit	 0004	  Para	  Private 
+STACKS . . . . . . . . . . . . .	16 Bit	 0000	  Para	  Private 
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+START  . . . . . . . . . . . . .	L Near	 0000	  CODES	
+exit . . . . . . . . . . . . . .	L Near	 005C	  CODES	
+print  . . . . . . . . . . . . .	L Near	 0049	  CODES	
+time1  . . . . . . . . . . . . .	Word	 0000	  DATAS	
+time2  . . . . . . . . . . . . .	Word	 0002	  DATAS	
+
+	   0 Warnings
+	   0 Errors

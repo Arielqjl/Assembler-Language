@@ -1,0 +1,79 @@
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 19:05:27
+tempfile.asm						     Page 1 - 1
+
+
+ 0000				DATAS SEGMENT
+ 0000 0034			    x dw 34H
+ 0002 0064			    y dw 100
+ 0004 0000			    z dw 0
+ 0006 003B			    w dw 3BH
+				    ;此处输入数据段代码  
+ 0008				DATAS ENDS
+
+ 0000				STACKS SEGMENT
+				    ;此处输入堆栈段代码
+ 0000				STACKS ENDS
+
+ 0000				CODES SEGMENT
+				    ASSUME CS:CODES,DS:DATAS,SS:STACKS
+ 0000				START:
+ 0000  B8 ---- R		    mov ax,datas
+ 0003  8E D8			    mov ds,ax
+				    ;ax = w - x
+ 0005  A1 0006 R		    MOV AX,w
+ 0008  8B 16 0000 R		    MOV dx,x
+ 000C  2B C2			    sub ax,dx
+				    
+				    ;ax = ax / 5
+ 000E  99			    cwd
+ 000F  B9 0005			    mov cx,5
+ 0012  F7 F9			    idiv cx
+				    
+				    ;ax = ax * y
+ 0014  8B 0E 0002 R		    mov cx,y
+ 0018  F7 E9			    imul cx
+				    
+				    ;ax = ax * 2
+ 001A  B9 0002			    mov cx,2
+ 001D  F7 E9			    imul cx
+				    
+				    ;z <- ax
+ 001F  A3 0004 R		    mov z,ax
+				    
+				    ;此处输入代码段代码
+ 0022  B8 4C00			    mov ax,4c00H
+ 0025  CD 21			    int 21H
+ 0027				CODES ENDS
+				    END START
+
+
+
+
+
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 19:05:27
+tempfile.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CODES  . . . . . . . . . . . . .	16 Bit	 0027	  Para	  Private 
+DATAS  . . . . . . . . . . . . .	16 Bit	 0008	  Para	  Private 
+STACKS . . . . . . . . . . . . .	16 Bit	 0000	  Para	  Private 
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+START  . . . . . . . . . . . . .	L Near	 0000	  CODES	
+w  . . . . . . . . . . . . . . .	Word	 0006	  DATAS	
+x  . . . . . . . . . . . . . . .	Word	 0000	  DATAS	
+y  . . . . . . . . . . . . . . .	Word	 0002	  DATAS	
+z  . . . . . . . . . . . . . . .	Word	 0004	  DATAS	
+
+	   0 Warnings
+	   0 Errors

@@ -1,0 +1,84 @@
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 22:06:07
+tempfile.asm						     Page 1 - 1
+
+
+ 0000				DATAS SEGMENT
+				    ;此处输入数据段代码 
+ 0000  000A [			    buffer db 10 dup(?) 
+        00
+       ]
+ 000A 07 05 09 01 03 06		    passw  db 7,5,9,1,3,6,8,0,2,4
+       08 00 02 04
+ 0014				DATAS ENDS
+
+ 0000				STACKS SEGMENT
+				    ;此处输入堆栈段代码
+ 0000				STACKS ENDS
+
+ 0000				CODES SEGMENT
+				    ASSUME CS:CODES,DS:DATAS,SS:STACKS
+ 0000				START:
+ 0000				main proc far
+ 0000  B8 ---- R		    MOV AX,DATAS
+ 0003  8E D8			    MOV DS,AX
+				    ;此处输入代码段代码
+				    
+ 0005  BE 0000			    mov si,0
+ 0008  8D 1E 000A R		    lea bx,passw
+
+ 000C				loop1:
+ 000C  B4 01				mov ah,01h
+ 000E  CD 21				int 21h
+ 0010  3C 0D				cmp al,0dh
+ 0012  74 10				jz exit
+ 0014  2C 30				sub al,48
+ 0016  72 F4				jb loop1
+ 0018  3C 09				cmp al,09h
+ 001A  77 F0				ja loop1
+ 001C  D7				xlat
+ 001D  88 84 0000 R			mov buffer[si],al
+ 0021  46				inc si
+ 0022  E2 E8				loop loop1
+
+ 0024				exit:
+ 0024  B4 4C			    MOV AH,4CH
+ 0026  CD 21			    INT 21H
+ 0028				main endp
+ 0028				CODES ENDS
+				    END START
+
+
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 22:06:07
+tempfile.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CODES  . . . . . . . . . . . . .	16 Bit	 0028	  Para	  Private 
+DATAS  . . . . . . . . . . . . .	16 Bit	 0014	  Para	  Private 
+STACKS . . . . . . . . . . . . .	16 Bit	 0000	  Para	  Private 
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+main . . . . . . . . . . . . . .	P Far	 0000	  CODES	Length= 0028 Public
+  loop1  . . . . . . . . . . . .	L Near	 000C	  CODES	
+  exit . . . . . . . . . . . . .	L Near	 0024	  CODES	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+START  . . . . . . . . . . . . .	L Near	 0000	  CODES	
+buffer . . . . . . . . . . . . .	Byte	 0000	  DATAS	
+passw  . . . . . . . . . . . . .	Byte	 000A	  DATAS	
+
+	   0 Warnings
+	   0 Errors

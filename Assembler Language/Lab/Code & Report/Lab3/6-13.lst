@@ -1,0 +1,102 @@
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 21:55:52
+tempfile.asm						     Page 1 - 1
+
+
+ 0000				DATAS SEGMENT
+				    ;此处输入数据段代码  
+ 0000 000E			    num dw 14
+ 0002 0000			    result dw ?
+ 0004				DATAS ENDS
+
+ 0000				STACKS SEGMENT
+				    ;此处输入堆栈段代码
+ 0000				STACKS ENDS
+
+ 0000				CODES SEGMENT
+				    ASSUME CS:CODES,DS:DATAS,SS:STACKS
+ 0000				START:
+ 0000  B8 ---- R		    MOV AX,DATAS
+ 0003  8E D8			    MOV DS,AX
+				    ;此处输入代码段代码
+				    
+ 0005  A1 0000 R		    mov ax,num
+ 0008  E8 0008			    call fib
+ 000B  89 1E 0002 R		    mov result,bx
+ 000F  B4 4C			    MOV AH,4CH
+ 0011  CD 21			    INT 21H
+				    
+ 0013				fib proc near
+ 0013  50				push ax
+ 0014  51				push cx
+					
+ 0015  83 F8 02				cmp ax,2
+ 0018  7E 13				jle less_equal_2
+ 001A  83 F8 01				cmp ax,1
+ 001D  7E 11				jle less_equal_1
+					
+ 001F  48				dec ax
+ 0020  E8 FFF0				call fib
+ 0023  8B CB				mov cx,bx
+ 0025  48				dec ax
+ 0026  E8 FFEA				call fib
+ 0029  03 D9				add bx,cx
+					
+ 002B  EB 06				jmp ender
+
+ 002D				less_equal_2:	
+ 002D  BB 0001				mov bx,1
+ 0030				less_equal_1:	
+ 0030  BB 0001				mov bx,1
+					
+ 0033				ender:
+ 0033  59				pop cx
+ 0034  58				pop ax
+ 0035  89 1E 0002 R			mov result,bx
+ 0039  C3				ret
+					
+ 003A				fib endp
+
+ 003A				CODES ENDS
+				    END START
+
+
+
+
+
+
+
+Microsoft (R) Macro Assembler Version 6.11		    05/12/18 21:55:52
+tempfile.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+CODES  . . . . . . . . . . . . .	16 Bit	 003A	  Para	  Private 
+DATAS  . . . . . . . . . . . . .	16 Bit	 0004	  Para	  Private 
+STACKS . . . . . . . . . . . . .	16 Bit	 0000	  Para	  Private 
+
+
+Procedures,  parameters and locals:
+
+                N a m e                 Type     Value    Attr
+
+fib  . . . . . . . . . . . . . .	P Near	 0013	  CODES	Length= 0027 Public
+  less_equal_2 . . . . . . . . .	L Near	 002D	  CODES	
+  less_equal_1 . . . . . . . . .	L Near	 0030	  CODES	
+  ender  . . . . . . . . . . . .	L Near	 0033	  CODES	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+START  . . . . . . . . . . . . .	L Near	 0000	  CODES	
+num  . . . . . . . . . . . . . .	Word	 0000	  DATAS	
+result . . . . . . . . . . . . .	Word	 0002	  DATAS	
+
+	   0 Warnings
+	   0 Errors
